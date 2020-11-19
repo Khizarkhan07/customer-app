@@ -1,0 +1,13 @@
+{
+  "customers": [
+    {
+      "first_name": "Tehseen Riaz",
+      "last_name": "Abbasi",
+      "email": "tehseenriazabbasi@gmail.com",
+      "phone": "03455893337",
+      "address": "COMSATS UNIVERSITY, ISLAMABAD",
+      "description": "exapmle",
+      "id": 1
+    }
+  ]
+}
