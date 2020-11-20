@@ -2,10 +2,15 @@ import React, {useCallback, useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {getData, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
+import {Button} from "../../components/Button";
+import Categories from "../category/Categories";
+import {InitialState} from "../../types";
+import { Table, Space } from 'antd';
+import 'antd/dist/antd.css';
 
-const Sales =() =>{
+const Sales = () =>{
+
     const {salesState, salesDispatch} = useSalesContext();
-
     useEffect(()=> {
         if(getData() === false) {
             storeData(salesState)
@@ -20,9 +25,47 @@ const Sales =() =>{
         salesDispatch({type: 'DELETE_SALE', payload: {id}})
     }, [])
 
+
+
+    const columns = [
+        {
+            title: 'product',
+            dataIndex: 'product_name',
+            key: 'product',
+
+        },
+        {
+            title: 'price',
+            dataIndex: 'price',
+            key: 'price',
+        },
+        {
+            title: 'description',
+            dataIndex: 'description',
+            key: 'description',
+        },
+        {
+            title: 'customer',
+            dataIndex: 'customer_id',
+            key: 'customer',
+        },
+        {
+            title: 'Action',
+            key: 'action',
+            render: ( record: InitialState) => (
+                <Space size="middle">
+                    <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteSale((record.id as number))}>Delete Sale</button>
+                </Space>
+            ),
+        },
+
+    ];
+
+    const data = salesState
     return (
 
         <div>
+
             {salesState && salesState.length === 0 && (
                 <div className="text-center">
                     <h2>No sale found at the moment</h2>
@@ -30,36 +73,20 @@ const Sales =() =>{
             )}
 
             <div className="container">
-                <div className="row">
-                    <table className="table table-bordered">
-                        <thead className="thead-light">
-                        <tr>
-                            <th scope="col">Product</th>
-                            <th scope="col">Price</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Customer</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {salesState && salesState.map(sale =>
-                            <tr key={sale.id}>
-                                <td>{sale.product_name}</td>
-                                <td>{sale.price}</td>
-                                <td>{sale.description}</td>
-                                <td>{sale.customer_id}</td>
-                                <td>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="btn-group" >
-                                            <button className="btn btn-sm btn-outline-secondary" onClick={()=> {deleteSale(sale.id as number)}} >Delete Sale</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+
+
+                <Categories/>
+
+                <hr/>
+
+                <Button text={'Create Sale'}
+                    callback={(e: React.MouseEvent<HTMLButtonElement>)=> {
+                        window.location.href = '/create/sale'
+                    }}
+                />
+
+                <Table columns={columns} dataSource={data} />
+
             </div>
 
         </div>

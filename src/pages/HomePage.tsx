@@ -2,7 +2,9 @@ import React, {useEffect} from 'react';
 import {Link} from "react-router-dom";
 import {useCustomerContext} from "../contexts/customerContext";
 import axios from "axios";
-import {useFetch} from "../hooks/useFetch";
+import {Button} from "../components/Button";
+import {InitialState} from "../types";
+import {Space, Table} from "antd";
 
 export const HomePage: React.FC =() =>  {
 
@@ -10,8 +12,11 @@ export const HomePage: React.FC =() =>  {
     const customers = state;
 
 
-    const res= useFetch('http://localhost:5000/customers', {})
-    dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: res.response })
+    useEffect( () => {
+        axios.get(`http://localhost:5000/customers/`).then(data => {
+            dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data.data })
+        })
+    }, [])
 
    const deleteCustomer = (id: number) => {
         axios.delete(`http://localhost:5000/customers/${id}`).then(data => {
@@ -19,6 +24,54 @@ export const HomePage: React.FC =() =>  {
         })
        window.location.href = '/'
     }
+    console.log(state)
+
+    const columns = [
+        {
+            title: 'First Name',
+            dataIndex: 'first_name',
+            key: 'first_name',
+
+        },
+        {
+            title: 'Last Name',
+            dataIndex: 'last_name',
+            key: 'last_name',
+        },
+        {
+            title: 'Email',
+            dataIndex: 'Email',
+            key: 'email',
+        },
+        {
+            title: 'Phone',
+            dataIndex: 'phone',
+            key: 'phone',
+        },
+        {
+            title: 'Address',
+            dataIndex: 'address',
+            key: 'address',
+        },
+        {
+            title: 'description',
+            dataIndex: 'description',
+            key: 'description',
+        },
+
+        {
+            title: 'Action',
+            key: 'action',
+            render: ( customer: InitialState) => (
+                <Space size="middle">
+                    <Link to={`edit/${customer.id}`} className="btn btn-sm btn-outline-secondary">Edit Customer </Link>
+                    <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteCustomer(customer.id as number)}>Delete Customer</button>
+                </Space>
+            ),
+        },
+
+
+    ];
 
     return (
         <div>
@@ -29,41 +82,10 @@ export const HomePage: React.FC =() =>  {
             )}
 
             <div className="container">
-                <div className="row">
-                    <table className="table table-bordered">
-                        <thead className="thead-light">
-                        <tr>
-                            <th scope="col">Firstname</th>
-                            <th scope="col">Lastname</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Phone</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Description</th>
-                            <th scope="col">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {customers && customers.map(customer =>
-                            <tr key={customer.id}>
-                                <td>{customer.first_name}</td>
-                                <td>{customer.last_name}</td>
-                                <td>{customer.email}</td>
-                                <td>{customer.phone}</td>
-                                <td>{customer.address}</td>
-                                <td>{customer.description}</td>
-                                <td>
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <div className="btn-group" >
-                                            <Link to={`edit/${customer.id}`} className="btn btn-sm btn-outline-secondary">Edit Customer </Link>
-                                            <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteCustomer(customer.id as number)}>Delete Customer</button>
-                                        </div>
-                                    </div>
-                                </td>
-                            </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+                <Button text={"Create Customer"} callback={(e)=> {
+                    window.location.href = '/create'
+                }}/>
+                <Table columns={columns} dataSource={state} />
             </div>
 
         </div>

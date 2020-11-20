@@ -8,7 +8,14 @@ const DELETE_SALES = 'DELETE_SALE'
 const EDIT_SALE = 'EDIT_SALE'
 const GET_SINGLE_SALE = 'GET_SINGLE_SALE'
 
-export const initialState = [];
+export const initialState = [
+        {product_name:"laptop",price:"100500",description:"description",customer_id:"1","id":1},
+        {product_name:"laptop",price:"100500",description:"description",customer_id:"1","id":1},
+        {product_name:"laptop",price:"100500",description:"description",customer_id:"1","id":1},
+        {product_name:"laptop",price:"100500",description:"description",customer_id:"1","id":1},
+        {product_name:"laptop",price:"100500",description:"description",customer_id:"1","id":1},
+
+    ];
 
 const SalesContext = createContext<{
     salesState: InitialState[];

@@ -2,41 +2,25 @@ import React, {useCallback, useEffect, useState} from 'react';
 import axios from "axios";
 
 const CreateCustomer: React.FC = () =>  {
+    const [state, setState] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        description: ''
+    })
     const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
-    const [firstName, setFirstName] = useState<string>('');
-    const [lastName, setLastName] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
-    const [phone, setPhone] = useState<string>('');
-    const [address, setAddress] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
 
 
-
-   const handleFistName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-            setFirstName(e.target.value);
-   }, [firstName])
-
-    const handleLastName = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setLastName(e.target.value);
-    }, [lastName])
-
-    const handleEmail = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(e.target.value);
-    }, [email])
-
-    const handlePhone = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setPhone(e.target.value);
-    }, [phone])
-
-    const handleDescription = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setDescription(e.target.value);
-    }, [description])
-
-
-    const handleAddress = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-        setAddress(e.target.value);
-    }, [address])
+    const handleChange = useCallback( (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        const value = e.target.value;
+        setState({
+            ...state,
+            [e.target.name]: value
+        });
+    }, [state])
 
 
     const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
@@ -44,12 +28,12 @@ const CreateCustomer: React.FC = () =>  {
         setLoading(true)
 
         const formData = {
-            first_name: firstName,
-            last_name: lastName,
-            email: email,
-            phone: phone,
-            address: address,
-            description: description,
+            first_name: state.firstName,
+            last_name: state.lastName,
+            email: state.email,
+            phone: state.phone,
+            address: state.address,
+            description: state.description,
         }
 
 
@@ -84,32 +68,32 @@ const CreateCustomer: React.FC = () =>  {
                 <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
                     <div className="form-group col-md-12">
                         <label htmlFor="first_name"> First Name </label>
-                        <input type="text" id="first_name" onChange={handleFistName} name="first_name" className="form-control" placeholder="Enter customer's first name" />
+                        <input type="text" id="first_name" onChange={handleChange} name="firstName" className="form-control" placeholder="Enter customer's first name" />
                     </div>
 
                     <div className="form-group col-md-12">
                         <label htmlFor="last_name"> Last Name </label>
-                        <input type="text" id="last_name" onChange={handleLastName} name="last_name" className="form-control" placeholder="Enter customer's last name" />
+                        <input type="text" id="last_name" onChange={handleChange} name="lastName" className="form-control" placeholder="Enter customer's last name" />
                     </div>
 
                     <div className="form-group col-md-12">
                         <label htmlFor="email"> Email </label>
-                        <input type="email" id="email" onChange={handleEmail} name="email" className="form-control" placeholder="Enter customer's email address" />
+                        <input type="email" id="email" onChange={handleChange} name="email" className="form-control" placeholder="Enter customer's email address" />
                     </div>
 
                     <div className="form-group col-md-12">
                         <label htmlFor="phone"> Phone </label>
-                        <input type="text" id="phone" onChange={handlePhone} name="phone" className="form-control" placeholder="Enter customer's phone number" />
+                        <input type="text" id="phone" onChange={handleChange} name="phone" className="form-control" placeholder="Enter customer's phone number" />
                     </div>
 
                     <div className="form-group col-md-12">
                         <label htmlFor="address"> Address </label>
-                        <input type="text" id="address" onChange={handleAddress} name="address" className="form-control" placeholder="Enter customer's address" />
+                        <input type="text" id="address" onChange={handleChange} name="address" className="form-control" placeholder="Enter customer's address" />
                     </div>
 
                     <div className="form-group col-md-12">
                         <label htmlFor="description"> Description </label>
-                        <input type="text" id="description" onChange={handleDescription} name="description" className="form-control" placeholder="Enter Description" />
+                        <input type="text" id="description" onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
                     </div>
 
                     <div className="form-group col-md-4 pull-right">

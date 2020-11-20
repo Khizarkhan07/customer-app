@@ -5,13 +5,16 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import {CustomerProvider} from "./contexts/customerContext";
 import {SalesProvider} from "./contexts/salesContext";
+import {CategoryProvider} from "./contexts/categoriesContext";
 
 ReactDOM.render(
     <BrowserRouter>
         <CustomerProvider>
-            <SalesProvider>
-                <App />
-            </SalesProvider>
+            <CategoryProvider>
+                <SalesProvider>
+                    <App />
+                </SalesProvider>
+            </CategoryProvider>
         </CustomerProvider>
     </BrowserRouter>
     , document.getElementById('root')

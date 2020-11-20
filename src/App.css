@@ -16,6 +16,7 @@ nav {
   background: #282c34;
   height: 70px;
   line-height: 70px;
+  margin-bottom: 5px;
 }
 
 nav ul li {
@@ -36,9 +37,13 @@ nav ul li a:hover {
   color: white;
   text-decoration: none;
 }
-
-table {
-  margin-top: 50px;
+.my-custom-scrollbar {
+  position: relative;
+  height: 300px;
+  overflow: auto;
+}
+.table-wrapper-scroll-y {
+  display: block;
 }
 
 .App-link {

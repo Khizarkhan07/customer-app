@@ -7,6 +7,7 @@ import CreateCustomer from "./pages/customer/CreateCustomer";
 import CreateSale from "./pages/sales/CreateSale";
 import Sales from "./pages/sales/Sales";
 import Navbar from "./pages/Navbar";
+import CreateCategory from "./pages/category/createCategory";
 const App: React.FC<RouteComponentProps<any>>  = () => {
    
     return (
@@ -19,6 +20,7 @@ const App: React.FC<RouteComponentProps<any>>  = () => {
           <Route path={'/create/customer'} exact component={CreateCustomer} />
           <Route path={'/create/sale'} exact component={CreateSale} />
           <Route path={'/create'} exact component={CreateCustomer} />
+          <Route path={'/create/category'} exact component={CreateCategory} />
           <Route path={'/edit/:id'} exact component={EditCustomer} />
 
         </Switch>

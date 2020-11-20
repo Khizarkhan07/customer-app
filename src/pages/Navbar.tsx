@@ -10,14 +10,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <Link to={'/create/customer'}> Create Customer </Link>
-            </li>
-
-            <li>
               <Link to={'/sales'}> Sales </Link>
-            </li>
-            <li>
-              <Link to={'/create/sale'}> Create Sale </Link>
             </li>
           </ul>
         </nav>

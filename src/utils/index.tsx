@@ -1,4 +1,4 @@
-import {InitialState} from "../types";
+import {InitialCategoryType, InitialState} from "../types";
 
 export const removeSale = (state: InitialState[], id: number) =>{
     for (let i = 0; i < state.length; i++) {
@@ -31,12 +31,29 @@ export const storeData = (data: InitialState[]) => {
 
 }
 
+export const storeCat = (data: InitialCategoryType) => {
+
+    window.localStorage.setItem("category", JSON.stringify(data));
+
+}
+
 export const getData = (): InitialState | boolean  => {
     if (typeof window == "undefined") {
         return false;
     }
     if (localStorage.getItem("sales")) {
         return JSON.parse(localStorage.getItem("sales") as string);
+    } else {
+        return false;
+    }
+}
+
+export const getCategories = (): InitialState | boolean  => {
+    if (typeof window == "undefined") {
+        return false;
+    }
+    if (localStorage.getItem("category")) {
+        return JSON.parse(localStorage.getItem("category") as string);
     } else {
         return false;
     }
