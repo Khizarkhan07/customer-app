@@ -6,29 +6,13 @@ import EditCustomer from "./pages/customer/EditCustomer";
 import CreateCustomer from "./pages/customer/CreateCustomer";
 import CreateSale from "./pages/sales/CreateSale";
 import Sales from "./pages/sales/Sales";
-class App extends React.Component<RouteComponentProps<any>> {
-  public render() {
+import Navbar from "./pages/Navbar";
+const App: React.FC<RouteComponentProps<any>>  = () => {
+   
     return (
       <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to={'/'}> Home </Link>
-            </li>
-
-            <li>
-              <Link to={'/create/customer'}> Create Customer </Link>
-            </li>
-
-            <li>
-              <Link to={'/sales'}> Sales </Link>
-            </li>
-            <li>
-              <Link to={'/create/sale'}> Create Sale </Link>
-            </li>
-          </ul>
-        </nav>
-
+        
+        <Navbar/>
         <Switch>
           <Route path={'/'} exact component={HomePage} />
           <Route path={'/sales'} exact component={Sales} />
@@ -41,6 +25,6 @@ class App extends React.Component<RouteComponentProps<any>> {
       </div>
     );
   }
-}
+
 
 export default withRouter(App);
