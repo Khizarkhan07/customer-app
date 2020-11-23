@@ -40,7 +40,7 @@ export const HomePage: React.FC =() =>  {
         },
         {
             title: 'Email',
-            dataIndex: 'Email',
+            dataIndex: 'email',
             key: 'email',
         },
         {
@@ -82,6 +82,7 @@ export const HomePage: React.FC =() =>  {
             )}
 
             <div className="container">
+                
                 <Button text={"Create Customer"} callback={(e)=> {
                     window.location.href = '/create'
                 }}/>
