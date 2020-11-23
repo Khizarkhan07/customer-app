@@ -5,18 +5,14 @@ import axios from "axios";
 import {Button} from "../components/Button";
 import {InitialState} from "../types";
 import {Space, Table} from "antd";
-import { Drawer, Form, Col, Row, Input, Select, DatePicker } from 'antd';
+import { Drawer, message } from 'antd';
 
 
 
 export const HomePage: React.FC =() =>  {
 
     const {state, dispatch} = useCustomerContext();
-    const [visible, setVisible] = useState(false);
-
     const customers = state;
-
-
     const [stateValue, setStateValue] = useState({
         firstName: '',
         lastName: '',
@@ -25,9 +21,8 @@ export const HomePage: React.FC =() =>  {
         address: '',
         description: ''
     })
-    const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(false);
-
+    const [visible, setVisible] = useState(false);
 
     const handleChange = useCallback( (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.value;
@@ -37,6 +32,13 @@ export const HomePage: React.FC =() =>  {
         });
     }, [stateValue])
 
+    const success = useCallback(() => {
+        message.success('Customer Created!');
+      }, [visible]);
+
+    const toggleDrawer = useCallback(() => {
+        setVisible(!visible);
+    }, [visible])
 
     const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
@@ -50,25 +52,15 @@ export const HomePage: React.FC =() =>  {
             address: stateValue.address,
             description: stateValue.description,
         }
-
-        console.log(formData)
-
-        setSubmitSuccess(true);
         setLoading(false)
+        success();
         axios.post(`http://localhost:5000/customers`, formData).then(data => [
                 setTimeout(() => {
                     window.location.href= '/'
-                }, 1500)
+                }, 500)
         ]);
-   }
+    }
 
-
-
-
-    
-    const toggleDrawer = useCallback(() => {
-        setVisible(!visible);
-    }, [visible])
 
 
     useEffect( () => {
@@ -83,8 +75,6 @@ export const HomePage: React.FC =() =>  {
         })
        window.location.href = '/'
     }
-    console.log(state)
-
     const columns = [
         {
             title: 'First Name',
@@ -155,63 +145,49 @@ export const HomePage: React.FC =() =>  {
                     
                 >
                     
-                <div className={"col-md-12 form-wrapper"}>
-        
-                    {!submitSuccess && (
-                        <div className="alert alert-info" role="alert">
-                            Fill the form below to create a new post
-                        </div>
-                    )}
+                    <div className={"col-md-12 form-wrapper"}>
 
-                    {submitSuccess && (
-                        <div className="alert alert-info" role="alert">
-                            The form was successfully submitted!
-                        </div>
-                    )}
+                        <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="first_name"> First Name </label>
+                                <input type="text" id="first_name" onChange={handleChange} name="firstName" className="form-control" placeholder="Enter customer's first name" />
+                            </div>
 
-                    <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
-                        <div className="form-group col-md-12">
-                            <label htmlFor="first_name"> First Name </label>
-                            <input type="text" id="first_name" onChange={handleChange} name="firstName" className="form-control" placeholder="Enter customer's first name" />
-                        </div>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="last_name"> Last Name </label>
+                                <input type="text" id="last_name" onChange={handleChange} name="lastName" className="form-control" placeholder="Enter customer's last name" />
+                            </div>
 
-                        <div className="form-group col-md-12">
-                            <label htmlFor="last_name"> Last Name </label>
-                            <input type="text" id="last_name" onChange={handleChange} name="lastName" className="form-control" placeholder="Enter customer's last name" />
-                        </div>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="email"> Email </label>
+                                <input type="email" id="email" onChange={handleChange} name="email" className="form-control" placeholder="Enter customer's email address" />
+                            </div>
 
-                        <div className="form-group col-md-12">
-                            <label htmlFor="email"> Email </label>
-                            <input type="email" id="email" onChange={handleChange} name="email" className="form-control" placeholder="Enter customer's email address" />
-                        </div>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="phone"> Phone </label>
+                                <input type="text" id="phone" onChange={handleChange} name="phone" className="form-control" placeholder="Enter customer's phone number" />
+                            </div>
 
-                        <div className="form-group col-md-12">
-                            <label htmlFor="phone"> Phone </label>
-                            <input type="text" id="phone" onChange={handleChange} name="phone" className="form-control" placeholder="Enter customer's phone number" />
-                        </div>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="address"> Address </label>
+                                <input type="text" id="address" onChange={handleChange} name="address" className="form-control" placeholder="Enter customer's address" />
+                            </div>
 
-                        <div className="form-group col-md-12">
-                            <label htmlFor="address"> Address </label>
-                            <input type="text" id="address" onChange={handleChange} name="address" className="form-control" placeholder="Enter customer's address" />
-                        </div>
+                            <div className="form-group col-md-12">
+                                <label htmlFor="description"> Description </label>
+                                <input type="text" id="description" onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
+                            </div>
 
-                        <div className="form-group col-md-12">
-                            <label htmlFor="description"> Description </label>
-                            <input type="text" id="description" onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
-                        </div>
-
-                        <div className="form-group col-md-4 pull-right">
-                            <button className="btn btn-success" type="submit">
-                                Create Customer
-                            </button>
-                            {loading &&
-                            <span className="fa fa-circle-o-notch fa-spin" />
-                            }
-                        </div>
-                    </form>
-                </div>
-
-
+                            <div className="form-group col-md-4 pull-right">
+                                <button className="btn btn-success" type="submit">
+                                    Create Customer
+                                </button>
+                                {loading &&
+                                <span className="fa fa-circle-o-notch fa-spin" />
+                                }
+                            </div>
+                        </form>
+                    </div>
                 </Drawer>
             </div>
 
