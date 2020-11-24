@@ -2,15 +2,17 @@ import React, {useState, useEffect, useCallback} from 'react';
 import axios from "axios";
 import {InitialState} from "../../types";
 import { RouteComponentProps } from 'react-router-dom';
+import {getCustomers, storeCustomers} from "../../utils";
+import {useCustomerContext} from "../../contexts/customerContext";
 
 const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
-
+    const {state, dispatch} = useCustomerContext();
     const [loading, setLoading] = useState<boolean>(false)
     const [submitSuccess, setSubmitSuccess] = useState<boolean>(false)
     const [customer, setCustomer] = useState<InitialState>({})
 
 
-    const [state, setState] = useState({
+    const [stateValue, setStateValue] = useState({
         firstName: customer.first_name,
         lastName: customer.last_name,
         email: customer.email,
@@ -19,48 +21,59 @@ const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
         description: customer.description
     })
 
-    const handleChange = useCallback( (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const handleChange =  useCallback((e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.value;
-        console.log(e.target.value);
-        console.log(e.target.name);
-        setState({
-            ...state,
+        setStateValue({
+            ...stateValue,
             [e.target.name]: value
         });
-    }, [])
+    },[stateValue])
 
     useEffect(()=> {
-        axios.get(`http://localhost:5000/customers/${props.match.params.id}`).then(data => {
-            setCustomer(data.data);
-        })
+        if(getCustomers() === null) {
+            storeCustomers(state)
+        }
+        else {
+            const data = getCustomers()
+            dispatch({type: 'CURRENT_CUSTOMERS', payload: data})
+
+            singleCustomer(props.match.params.id)
+        }
     },[])
 
+
+    const singleCustomer = (id: number) => {
+        for (let i= 0; i< state.customer.length; i++) {
+            if(state.customer[i].id == id){
+                setCustomer(state.customer[i])
+            }
+        }
+    }
 
     const processFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setLoading(true);
 
-        const formData = {
-            first_name: state.firstName,
-            last_name: state.lastName,
-            email: state.email,
-            phone: state.phone,
-            address: state.address,
-            description: state.description,
-        }
 
-        axios.patch(`http://localhost:5000/customers/${props.match.params.id}`, formData).then(data => {
-            setSubmitSuccess(true);
-            setLoading(false);
-            setTimeout(() => {
-                window.location.href='/';
-            }, 1500)
-        })
+
+
+        dispatch({type: 'EDIT_CUSTOMER' , payload: {
+                id : props.match.params.id,
+                first_name: stateValue.firstName,
+                last_name: stateValue.lastName,
+                email: stateValue.email,
+                phone: stateValue.phone,
+                address: stateValue.address,
+                description: stateValue.description,
+
+            }})
+        window.location.href='/';
+
     }
 
     return (
         <div className="App">
-            {state &&
+            {customer &&
             <div>
 
                 <div>

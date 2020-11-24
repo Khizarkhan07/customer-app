@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {getData, storeData} from "../../utils";
+import {getCustomers, getData, storeCustomers, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
@@ -31,17 +31,23 @@ const Sales = () =>{
 
 
     useEffect(()=> {
+
         if(getData() === false) {
             storeData(salesState)
         }
         else {
             const data = getData()
             salesDispatch( {type: 'CURRENT_SALES', payload: {data}})
-
-            axios.get(`http://localhost:5000/customers`).then(data => {
-                dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data.data })
-            })
         }
+        if(getCustomers() === false) {
+            storeCustomers(state)
+        }
+        else {
+            const data = getCustomers()
+            dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data })
+
+        }
+
     }, [])
 
     const deleteSale = useCallback((id: number)=> {
@@ -59,11 +65,12 @@ const Sales = () =>{
     }
 
     const customerOptions = useMemo(() => {
-        return state.map(customer => (
-            <option key={customer.id} value={customer.id}>
-                {customer.first_name+ " - " + customer.id}
-            </option>
-        ))
+            return state.customer.map(customer => (
+                <option key={customer.id} value={customer.id}>
+                    {customer.first_name+ " - " + customer.id}
+                </option>
+            ))
+
     }, [state]);
 
 

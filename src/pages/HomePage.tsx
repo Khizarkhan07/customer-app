@@ -3,16 +3,17 @@ import {Link} from "react-router-dom";
 import {useCustomerContext} from "../contexts/customerContext";
 import axios from "axios";
 import {Button} from "../components/Button";
-import {InitialState} from "../types";
+import {CustomerType, InitialState} from "../types";
 import {Space, Table} from "antd";
 import { Drawer, message } from 'antd';
+import {getCustomers, getData, storeCustomers, storeData} from "../utils";
 
 
 
 export const HomePage: React.FC =() =>  {
 
     const {state, dispatch} = useCustomerContext();
-    const customers = state;
+
     const [stateValue, setStateValue] = useState({
         firstName: '',
         lastName: '',
@@ -43,36 +44,32 @@ export const HomePage: React.FC =() =>  {
     const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         setLoading(true)
-
-        const formData = {
-            first_name: stateValue.firstName,
-            last_name: stateValue.lastName,
-            email: stateValue.email,
-            phone: stateValue.phone,
-            address: stateValue.address,
-            description: stateValue.description,
-        }
         setLoading(false)
         success();
-        axios.post(`http://localhost:5000/customers`, formData).then(data => [
-                setTimeout(() => {
-                    window.location.href= '/'
-                }, 500)
-        ]);
+        dispatch({type: 'CREATE_CUSTOMER', payload: {
+                first_name: stateValue.firstName,
+                last_name: stateValue.lastName,
+                email: stateValue.email,
+                phone: stateValue.phone,
+                address: stateValue.address,
+                description: stateValue.description,
+            }})
+        setVisible(false);
+
     }
 
-
-
-    useEffect( () => {
-        axios.get(`http://localhost:5000/customers/`).then(data => {
-            dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data.data })
-        })
+    useEffect( () =>{
+        if(getCustomers() === null) {
+            storeCustomers(state)
+        }
+        else {
+            const data = getCustomers()
+            dispatch({type: 'CURRENT_CUSTOMERS', payload: data})
+        }
     }, [])
 
    const deleteCustomer = (id: number) => {
-        axios.delete(`http://localhost:5000/customers/${id}`).then(data => {
-            dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data.data })
-        })
+       dispatch( {type: 'DELETE_CUSTOMER', payload: {id}})
        window.location.href = '/'
     }
     const columns = [
@@ -111,7 +108,7 @@ export const HomePage: React.FC =() =>  {
         {
             title: 'Action',
             key: 'action',
-            render: ( customer: InitialState) => (
+            render: ( customer: CustomerType) => (
                 <Space size="middle">
                     <Link to={`edit/${customer.id}`} className="btn btn-sm btn-outline-secondary">Edit Customer </Link>
                     <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteCustomer(customer.id as number)}>Delete Customer</button>
@@ -124,7 +121,7 @@ export const HomePage: React.FC =() =>  {
 
     return (
         <div>
-            {customers && customers.length === 0 && (
+            {!state.customer  && (
                 <div className="text-center">
                     <h2>No customer found at the moment</h2>
                 </div>
@@ -134,7 +131,7 @@ export const HomePage: React.FC =() =>  {
                 
                 <Button text={"Create Customer"} callback={toggleDrawer}/>
                 
-                <Table columns={columns} dataSource={state} />
+                <Table columns={columns} dataSource={state.customer} />
 
                 <Drawer
                     title="Create a new customer"

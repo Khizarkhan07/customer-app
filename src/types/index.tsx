@@ -10,7 +10,20 @@ export type CategoryType = {
     name: string;
 }
 
-
 export type InitialCategoryType = {
     categories: CategoryType[],
+}
+
+export type CustomerType = {
+    id : number,
+    first_name: string,
+    last_name: string,
+    email : string,
+    phone: string,
+    address: string,
+    description : string
+}
+
+export type InitialCustomerType = {
+    customer: CustomerType[]
 }

@@ -35,11 +35,11 @@ const CreateSale: React.FC = () =>  {
     }
 
     const customerOptions = useMemo(() => {
-        return state.map(customer => (
+        return /*state.map(customer => (
             <option key={customer.id} value={customer.id}>
                 {customer.first_name+ " - " + customer.id}
             </option>
-        ))
+        ))*/
     }, [state]);
 
 
