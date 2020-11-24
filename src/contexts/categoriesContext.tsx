@@ -5,14 +5,14 @@ import {storeCat} from "../utils";
 const ADD_CATEGORY = 'ADD_CATEGORY'
 const CURRENT_CATEGORIES = 'CURRENT_CATEGORIES'
 export const initialState = {
-    categories: {
-        "1": { id: "1", name: "Electronics" },
-        "2": { id: "2", name: "Mobile Phones" , },
-        "3": { id: "3", name: "Accessories",  },
-        "4": { id: "4", name: "Wood Work",  },
-        "5": { id: "5", name: "Cars",  },
-    },
-    totalCategories : ["1", "2" , "3", "4", "5"]
+    categories: [
+         { id: "1", name: "Electronics" },
+         { id: "2", name: "Mobile Phones" , },
+         { id: "3", name: "Accessories",  },
+         { id: "4", name: "Wood Work",  },
+         { id: "5", name: "Cars",  },
+    ],
+
 }
 
 const CategoryContext = createContext<{
@@ -27,17 +27,11 @@ const CategoryContext = createContext<{
 const categoryReducer = (state: InitialCategoryType, action: actionType) => {
     switch (action.type) {
         case ADD_CATEGORY :{
-            const id = (state.totalCategories.length+1).toString();
+            const id = (state.categories.length+1).toString();
             action.payload.id = id;
             const newState =  {
                 ...state,
-                categories: {
-                    ...state.categories,
-                    [id]: action.payload,
-                },
-                totalCategories: [
-                    ...state.totalCategories , id
-                ]
+                categories: [...state.categories, action.payload],
             };
             storeCat(newState);
             return newState;

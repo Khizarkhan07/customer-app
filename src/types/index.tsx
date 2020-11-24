@@ -5,16 +5,12 @@ export type actionType = {
     type: string;
     payload: any
 }
-export type CategoryObjectType = {
+export type CategoryType = {
     id: string,
     name: string;
 }
 
-export type CategoryType = {
-    [key : string] : CategoryObjectType
-}
 
 export type InitialCategoryType = {
-    categories: CategoryType,
-    totalCategories: string[]
+    categories: CategoryType[],
 }

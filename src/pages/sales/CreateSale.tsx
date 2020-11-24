@@ -2,7 +2,6 @@ import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {useCustomerContext} from "../../contexts/customerContext";
 import {useSalesContext} from "../../contexts/salesContext";
 import axios from "axios";
-import {CategoryObjectType} from "../../types";
 import {useCategoryContext} from "../../contexts/categoriesContext";
 
 const CreateSale: React.FC = () =>  {
@@ -61,8 +60,7 @@ const CreateSale: React.FC = () =>  {
 
     }
 
-    const categories = categoryState.totalCategories.map((catId: string) => {
-            const category: CategoryObjectType = categoryState.categories[catId];
+    const categories = categoryState.categories.map((category) => {
 
             return <option key={category.id} value={category.id}>
                     {category.name+ " - " + category.id}

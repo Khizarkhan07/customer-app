@@ -1,10 +1,10 @@
 import React, {useEffect, useState, useCallback} from "react";
 import {useCategoryContext} from "../../contexts/categoriesContext";
-import {CategoryObjectType} from "../../types";
 import {Button} from "../../components/Button";
 import {getCategories, storeCat} from "../../utils";
 import { Table , Modal} from 'antd';
 import 'antd/dist/antd.css';
+import {CategoryType} from "../../types";
 
 
 const Categories: React.FC = () => {
@@ -65,11 +65,9 @@ const Categories: React.FC = () => {
 
     ];
 
-    const data : CategoryObjectType[]  = [];
+    const data : CategoryType[]  = [];
 
-    {categoryState && categoryState.totalCategories.map(catId => {
-
-            const category: CategoryObjectType = categoryState.categories[catId];
+    {categoryState && categoryState.categories.map(category => {
             data.push(category);
         }
     )}

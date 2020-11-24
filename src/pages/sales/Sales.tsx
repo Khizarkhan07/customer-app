@@ -3,7 +3,7 @@ import {getData, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
-import {CategoryObjectType, InitialState} from "../../types";
+import { InitialState, CategoryType} from "../../types";
 import { Table, Space, Drawer, message } from 'antd';
 import 'antd/dist/antd.css';
 import {useCustomerContext} from "../../contexts/customerContext";
@@ -81,14 +81,11 @@ const Sales = () =>{
         window.location.href ='/sales'
 
     }
-
-    const categories = categoryState.totalCategories.map((catId: string) => {
-        const category: CategoryObjectType = categoryState.categories[catId];
+    const categories = categoryState.categories.map((category: CategoryType) => {
 
         return <option key={category.id} value={category.id}>
             {category.name+ " - " + category.id}
         </option>
-
 
     });
 
