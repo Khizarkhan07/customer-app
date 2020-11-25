@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {getCustomers, getData, storeCustomers, storeData} from "../../utils";
+import {callback, getCustomers, getData, storeCustomers, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
@@ -8,7 +8,8 @@ import { Table, Space, Drawer, message } from 'antd';
 import 'antd/dist/antd.css';
 import {useCustomerContext} from "../../contexts/customerContext";
 import {useCategoryContext} from "../../contexts/categoriesContext";
-import axios from "axios";
+import  { unstable_Profiler as Profiler} from "react";
+
 
 const Sales = () =>{
 
@@ -39,7 +40,7 @@ const Sales = () =>{
             const data = getData()
             salesDispatch( {type: 'CURRENT_SALES', payload: {data}})
         }
-        if(getCustomers() === false) {
+        if(getCustomers() == null) {
             storeCustomers(state)
         }
         else {
@@ -144,8 +145,9 @@ const Sales = () =>{
 
             <div className="container">
 
-
-                <Categories/>
+                <Profiler id={'categories'} onRender={callback}>
+                    <Categories/>
+                </Profiler>
 
                 <hr/>
 

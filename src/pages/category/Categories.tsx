@@ -5,6 +5,7 @@ import {getCategories, storeCat} from "../../utils";
 import { Table , Modal} from 'antd';
 import 'antd/dist/antd.css';
 import {CategoryType} from "../../types";
+import { unstable_trace as trace, unstable_wrap as wrap } from "scheduler/tracing";
 
 
 const Categories: React.FC = () => {
@@ -12,25 +13,28 @@ const Categories: React.FC = () => {
 
     const [visible, setVisible] = React.useState(false);
     const [confirmLoading, setConfirmLoading] = React.useState(false);
-    const [modalText, setModalText] = React.useState('Content of the modal');
     const [name, setName] = useState('')
+
 
     const showModal = useCallback(() => {
         setVisible(true);
     }, [visible]);
 
-    
-    const handleOk = useCallback (() => {
-        categoryDispatch({type: 'ADD_CATEGORY', payload:{ name: name} })
+
+    const handleOk = () => {
+        categoryDispatch({type: 'ADD_CATEGORY', payload: {name: name}})
         setConfirmLoading(true);
         setTimeout(() => {
-        setVisible(false);
-        setConfirmLoading(false);
+            setVisible(false);
+            setConfirmLoading(false);
         }, 2000);
-    }, [name]);
+    };
+
+
+
+
 
     const handleCancel = useCallback( () => {
-
         setVisible(false);
     }, [visible]);
 

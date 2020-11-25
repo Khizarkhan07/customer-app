@@ -1,13 +1,12 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useCustomerContext} from "../contexts/customerContext";
-import axios from "axios";
 import {Button} from "../components/Button";
 import {CustomerType, InitialState} from "../types";
 import {Space, Table} from "antd";
 import { Drawer, message } from 'antd';
-import {getCustomers, getData, storeCustomers, storeData} from "../utils";
-
+import {getCustomers, getData, storeCustomers} from "../utils";
+import { unstable_trace as trace } from "scheduler/tracing";
 
 
 export const HomePage: React.FC =() =>  {
@@ -39,23 +38,29 @@ export const HomePage: React.FC =() =>  {
 
     const toggleDrawer = useCallback(() => {
         setVisible(!visible);
+
     }, [visible])
 
-    const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault();
-        setLoading(true)
-        setLoading(false)
-        success();
-        dispatch({type: 'CREATE_CUSTOMER', payload: {
-                first_name: stateValue.firstName,
-                last_name: stateValue.lastName,
-                email: stateValue.email,
-                phone: stateValue.phone,
-                address: stateValue.address,
-                description: stateValue.description,
-            }})
-        setVisible(false);
 
+    const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
+        trace('create customer', performance.now(), ()=> {
+            e.preventDefault();
+            setLoading(true)
+            setLoading(false)
+            success();
+            dispatch({type: 'CREATE_CUSTOMER', payload: {
+                    first_name: stateValue.firstName,
+                    last_name: stateValue.lastName,
+                    email: stateValue.email,
+                    phone: stateValue.phone,
+                    address: stateValue.address,
+                    description: stateValue.description,
+                }})
+            setVisible(false);
+
+        })
+        
+        
     }
 
     useEffect( () =>{

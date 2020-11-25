@@ -108,3 +108,17 @@ export const getCustomers = (): InitialCustomerType[] | boolean  => {
         return false;
     }
 }
+
+export const callback = (id: string , phase: string , actualTime: number, baseTime: number, startTime: number, commitTime: number, interactions: any) => {
+    const performanceData = [
+        `id: ${id}`,
+        `phase: ${phase}`,
+        `actualDuration: ${actualTime}`,
+        `baseDuration: ${baseTime}`,
+        `startTime: ${startTime}`,
+        `commitTime: ${commitTime}`,
+        `interactions: ${JSON.stringify([...interactions])}`
+    ].join("\n");
+
+    console.log(performanceData);
+}
