@@ -8,6 +8,7 @@ import { Table, Space, Drawer, message } from 'antd';
 import 'antd/dist/antd.css';
 import {useCustomerContext} from "../../contexts/customerContext";
 import {useCategoryContext} from "../../contexts/categoriesContext";
+import SalesData from "./SaleData";
 
 
 const Sales = () =>{
@@ -55,12 +56,6 @@ const Sales = () =>{
         }
     }, [])
 
-    const deleteSale = useCallback((id: number)=> {
-        salesDispatch({type: 'DELETE_SALE', payload: {id}})
-    }, [])
-
-
-
     const handleChange = (e:React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const value = e.target.value;
         setStateValue({
@@ -103,41 +98,6 @@ const Sales = () =>{
     },[])
 
 
-    const columns = useMemo(()=> {
-        return [
-            {
-                title: 'product',
-                dataIndex: 'product_name',
-                key: 'product',
-
-            },
-            {
-                title: 'price',
-                dataIndex: 'price',
-                key: 'price',
-            },
-            {
-                title: 'description',
-                dataIndex: 'description',
-                key: 'description',
-            },
-            {
-                title: 'customer',
-                dataIndex: 'customer_id',
-                key: 'customer',
-            },
-            {
-                title: 'Action',
-                key: 'action',
-                render: ( record: InitialState) => (
-                    <Space size="middle">
-                        <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteSale((record.id as number))}>Delete Sale</button>
-                    </Space>
-                ),
-            },
-
-        ];
-    }, [salesState])
 
 
     return (
@@ -161,7 +121,7 @@ const Sales = () =>{
                     callback={toggleDrawer}
                 />
 
-                <Table columns={columns} dataSource={salesState} />
+                <SalesData sales={salesState}/>
 
                 <Drawer
                     title="Create a new customer"
