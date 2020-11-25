@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {callback, getCategories, getCustomers, getData, storeCat, storeCustomers, storeData} from "../../utils";
+import {getCategories, getCustomers, getData, storeCat, storeCustomers, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
@@ -8,7 +8,6 @@ import { Table, Space, Drawer, message } from 'antd';
 import 'antd/dist/antd.css';
 import {useCustomerContext} from "../../contexts/customerContext";
 import {useCategoryContext} from "../../contexts/categoriesContext";
-import  { unstable_Profiler as Profiler} from "react";
 
 
 const Sales = () =>{

@@ -16,7 +16,6 @@ const Categories: React.FC<categoryProps> = React.memo(({ categories }) => {
     const [confirmLoading, setConfirmLoading] = React.useState(false);
     const [name, setName] = useState('')
 
-
     const showModal = useCallback(() => {
         setVisible(true);
     }, [visible]);
@@ -59,8 +58,6 @@ const Categories: React.FC<categoryProps> = React.memo(({ categories }) => {
        ];
     }, [categoryState.categories])
 
-    const data : CategoryType[]  = categories;
-
 
     return (
         <div>
@@ -82,7 +79,7 @@ const Categories: React.FC<categoryProps> = React.memo(({ categories }) => {
                 </div>
 
             </Modal>
-            <Table columns={columns} dataSource={data} />
+            <Table columns={columns} dataSource={categories} />
         </div>
 
     )
