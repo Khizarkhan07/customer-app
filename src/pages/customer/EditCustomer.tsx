@@ -53,10 +53,6 @@ const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
     const processFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         setLoading(true);
-
-
-
-
         dispatch({type: 'EDIT_CUSTOMER' , payload: {
                 id : props.match.params.id,
                 first_name: stateValue.firstName,

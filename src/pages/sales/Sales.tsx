@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useState} from 'react';
-import {callback, getCustomers, getData, storeCustomers, storeData} from "../../utils";
+import {callback, getCategories, getCustomers, getData, storeCat, storeCustomers, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
@@ -15,7 +15,7 @@ const Sales = () =>{
 
     const {state , dispatch } = useCustomerContext();
     const {salesState, salesDispatch} = useSalesContext();
-    const {categoryState} = useCategoryContext();
+    const {categoryState, categoryDispatch} = useCategoryContext();
 
     const [stateValue, setStateValue] = React.useState({
         name: "",
@@ -48,7 +48,12 @@ const Sales = () =>{
             dispatch ({type: 'CURRENT_CUSTOMERS' ,payload: data })
 
         }
-
+        if (getCategories() === false) {
+            storeCat(categoryState)
+        } else {
+            const data = getCategories();
+            categoryDispatch({type: 'CURRENT_CATEGORIES', payload: {data}})
+        }
     }, [])
 
     const deleteSale = useCallback((id: number)=> {
@@ -89,50 +94,53 @@ const Sales = () =>{
         window.location.href ='/sales'
 
     }
-    const categories = categoryState.categories.map((category: CategoryType) => {
+    const categories = useMemo(()=> {
+        return categoryState.categories.map((category: CategoryType) => {
+            return <option key={category.id} value={category.id}>
+                {category.name+ " - " + category.id}
+            </option>
 
-        return <option key={category.id} value={category.id}>
-            {category.name+ " - " + category.id}
-        </option>
-
-    });
+        });
+    },[])
 
 
-    const columns = [
-        {
-            title: 'product',
-            dataIndex: 'product_name',
-            key: 'product',
+    const columns = useMemo(()=> {
+        return [
+            {
+                title: 'product',
+                dataIndex: 'product_name',
+                key: 'product',
 
-        },
-        {
-            title: 'price',
-            dataIndex: 'price',
-            key: 'price',
-        },
-        {
-            title: 'description',
-            dataIndex: 'description',
-            key: 'description',
-        },
-        {
-            title: 'customer',
-            dataIndex: 'customer_id',
-            key: 'customer',
-        },
-        {
-            title: 'Action',
-            key: 'action',
-            render: ( record: InitialState) => (
-                <Space size="middle">
-                    <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteSale((record.id as number))}>Delete Sale</button>
-                </Space>
-            ),
-        },
+            },
+            {
+                title: 'price',
+                dataIndex: 'price',
+                key: 'price',
+            },
+            {
+                title: 'description',
+                dataIndex: 'description',
+                key: 'description',
+            },
+            {
+                title: 'customer',
+                dataIndex: 'customer_id',
+                key: 'customer',
+            },
+            {
+                title: 'Action',
+                key: 'action',
+                render: ( record: InitialState) => (
+                    <Space size="middle">
+                        <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteSale((record.id as number))}>Delete Sale</button>
+                    </Space>
+                ),
+            },
 
-    ];
+        ];
+    }, [salesState])
 
-    const data = salesState
+
     return (
 
         <div>
@@ -145,9 +153,8 @@ const Sales = () =>{
 
             <div className="container">
 
-                <Profiler id={'categories'} onRender={callback}>
-                    <Categories/>
-                </Profiler>
+                <Categories categories={categoryState.categories}/>
+
 
                 <hr/>
 
@@ -155,7 +162,7 @@ const Sales = () =>{
                     callback={toggleDrawer}
                 />
 
-                <Table columns={columns} dataSource={data} />
+                <Table columns={columns} dataSource={salesState} />
 
                 <Drawer
                     title="Create a new customer"

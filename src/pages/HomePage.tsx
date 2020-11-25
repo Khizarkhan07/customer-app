@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useState} from 'react';
 import {Link} from "react-router-dom";
 import {useCustomerContext} from "../contexts/customerContext";
 import {Button} from "../components/Button";
@@ -73,56 +73,58 @@ export const HomePage: React.FC =() =>  {
         }
     }, [])
 
-   const deleteCustomer = (id: number) => {
+   const deleteCustomer = useCallback( (id: number) => {
        dispatch( {type: 'DELETE_CUSTOMER', payload: {id}})
        window.location.href = '/'
-    }
-    const columns = [
-        {
-            title: 'First Name',
-            dataIndex: 'first_name',
-            key: 'first_name',
+    },[state.customer])
+    const columns = useMemo(()=> {
+       return [
+           {
+               title: 'First Name',
+               dataIndex: 'first_name',
+               key: 'first_name',
 
-        },
-        {
-            title: 'Last Name',
-            dataIndex: 'last_name',
-            key: 'last_name',
-        },
-        {
-            title: 'Email',
-            dataIndex: 'email',
-            key: 'email',
-        },
-        {
-            title: 'Phone',
-            dataIndex: 'phone',
-            key: 'phone',
-        },
-        {
-            title: 'Address',
-            dataIndex: 'address',
-            key: 'address',
-        },
-        {
-            title: 'description',
-            dataIndex: 'description',
-            key: 'description',
-        },
+           },
+           {
+               title: 'Last Name',
+               dataIndex: 'last_name',
+               key: 'last_name',
+           },
+           {
+               title: 'Email',
+               dataIndex: 'email',
+               key: 'email',
+           },
+           {
+               title: 'Phone',
+               dataIndex: 'phone',
+               key: 'phone',
+           },
+           {
+               title: 'Address',
+               dataIndex: 'address',
+               key: 'address',
+           },
+           {
+               title: 'description',
+               dataIndex: 'description',
+               key: 'description',
+           },
 
-        {
-            title: 'Action',
-            key: 'action',
-            render: ( customer: CustomerType) => (
-                <Space size="middle">
-                    <Link to={`edit/${customer.id}`} className="btn btn-sm btn-outline-secondary">Edit Customer </Link>
-                    <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteCustomer(customer.id as number)}>Delete Customer</button>
-                </Space>
-            ),
-        },
+           {
+               title: 'Action',
+               key: 'action',
+               render: ( customer: CustomerType) => (
+                   <Space size="middle">
+                       <Link to={`edit/${customer.id}`} className="btn btn-sm btn-outline-secondary">Edit Customer </Link>
+                       <button className="btn btn-sm btn-outline-secondary" onClick={() => deleteCustomer(customer.id as number)}>Delete Customer</button>
+                   </Space>
+               ),
+           },
 
 
-    ];
+       ];
+    }, [state.customer])
 
     return (
         <div>
