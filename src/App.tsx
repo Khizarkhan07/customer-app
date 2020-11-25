@@ -16,14 +16,15 @@ const App: React.FC<RouteComponentProps<any>>  = () => {
           </Profiler>
 
 
-          <Switch>
-              <Route path={'/sales'} exact component={Sales} />
-              <Profiler id="Homepage" onRender={callback}>
-              <Route path={'/'} exact component={HomePage} />
-              </Profiler>
-              <Route path={'/edit/:id'} exact component={EditCustomer} />
-          </Switch>
-
+          <Profiler id="Homepage" onRender={callback}>
+            <Switch>
+                <Route path={'/sales'} exact component={Sales} />
+                
+                <Route path={'/'} exact component={HomePage} />
+                
+                <Route path={'/edit/:id'} exact component={EditCustomer} />
+            </Switch>
+          </Profiler>
       </div>
     );
   }

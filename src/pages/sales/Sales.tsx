@@ -33,14 +33,14 @@ const Sales = () =>{
 
     useEffect(()=> {
 
-        if(getData() === false) {
+        if(!getData()) {
             storeData(salesState)
         }
         else {
             const data = getData()
             salesDispatch( {type: 'CURRENT_SALES', payload: {data}})
         }
-        if(getCustomers() == null) {
+        if(!getCustomers()) {
             storeCustomers(state)
         }
         else {
