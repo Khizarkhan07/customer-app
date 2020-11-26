@@ -1,43 +1,42 @@
 {
-  "name": "customer-app",
+  "name": "customer-management-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.53",
-    "@types/react-dom": "^16.9.8",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-scripts": "4.0.0",
-    "typescript": "^4.0.3",
-    "web-vitals": "^0.2.4"
+    "@material-ui/data-grid": "^4.0.0-alpha.9",
+    "@types/jest": "24.0.11",
+    "@types/node": "11.13.4",
+    "@types/react": "16.8.13",
+    "@types/react-dom": "16.8.4",
+    "@types/react-router-dom": "^4.3.2",
+    "@types/scheduler": "^0.16.1",
+    "antd": "^4.8.4",
+    "axios": "^0.18.0",
+    "nanoid": "^3.1.17",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "scheduler": "^0.20.1",
+    "typescript": "3.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "server": "json-server --watch server/db.json"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "devDependencies": {
+    "prettier": "2.1.2"
   }
 }

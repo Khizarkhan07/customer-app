@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { unstable_Profiler as Profiler} from "react";
 import './App.css';
+import { Switch, Route, withRouter, RouteComponentProps} from 'react-router-dom';
+import EditCustomer from "./pages/customer/EditCustomer";
+import Sales from "./pages/sales/Sales";
+import Navbar from "./pages/Navbar";
+import {callback} from "./utils";
+import HomePage from "./pages/customer/HomePage";
+const App: React.FC<RouteComponentProps<any>>  = () => {
+   
+    return (
+      <div>
+          <Profiler id="Header" onRender={callback}>
+              <Navbar/>
+          </Profiler>
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
 
-export default App;
+
+            <Switch>
+                <Profiler id="routes" onRender={callback}>
+                <Route path={'/sales'} exact component={Sales} />
+                
+                <Route path={'/'} exact component={HomePage} />
+                
+                <Route path={'/edit/:id'} exact component={EditCustomer} />
+
+                </Profiler>
+            </Switch>
+      </div>
+    );
+  }
+
+
+export default withRouter(App);
