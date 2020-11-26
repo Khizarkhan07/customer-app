@@ -30,7 +30,7 @@ const salesReducer = (state: InitialState[], action: actionType) => {
         case CREATE_SALE :{
             action.payload.data.id = state.length+1;
             const newState =  [...state, action.payload.data];
-            storeData(state)
+            storeData(newState)
             return newState;
         }
         case DELETE_SALES: {

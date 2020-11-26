@@ -53,9 +53,9 @@ const CustomerDrawer = () => {
     const MemoButton = useMemo(()=> {
         return <Button callback={toggleDrawer} text={"create customer"}/>
     },[visible])
-    return (
-        <React.Fragment>
-            {MemoButton}
+
+    const CustomerDrawer = useMemo(() => {
+        return (
             <Drawer
                 title="Create a new customer"
                 width={720}
@@ -106,6 +106,12 @@ const CustomerDrawer = () => {
                     </form>
                 </div>
             </Drawer>
+        )
+    }, [visible, stateValue])
+    return (
+        <React.Fragment>
+            {MemoButton}
+            {CustomerDrawer}
         </React.Fragment>
 
     );
