@@ -5,7 +5,7 @@ import EditCustomer from "./pages/customer/EditCustomer";
 import Sales from "./pages/sales/Sales";
 import Navbar from "./pages/Navbar";
 import {callback} from "./utils";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/customer/HomePage";
 const App: React.FC<RouteComponentProps<any>>  = () => {
    
     return (
