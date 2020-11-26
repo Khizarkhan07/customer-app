@@ -11,7 +11,7 @@ type categoryProps =  {
 }
 
 const SalesData: React.FC<categoryProps> = React.memo(({ sales }) => {
-    const {salesState, salesDispatch} = useSalesContext();
+    const {salesDispatch} = useSalesContext();
 
     const deleteSale = useCallback((id: number)=> {
         salesDispatch({type: 'DELETE_SALE', payload: {id}})

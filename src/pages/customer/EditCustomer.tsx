@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect, useCallback, useMemo} from 'react';
 import axios from "axios";
 import {InitialState} from "../../types";
 import { RouteComponentProps } from 'react-router-dom';
@@ -42,13 +42,13 @@ const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
     },[])
 
 
-    const singleCustomer = (id: number) => {
+    const singleCustomer = useCallback((id: number) => {
         for (let i= 0; i< state.customer.length; i++) {
             if(state.customer[i].id == id){
                 setCustomer(state.customer[i])
             }
         }
-    }
+    },[customer])
 
     const processFormSubmission = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
@@ -67,6 +67,50 @@ const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
 
     }
 
+    const form = useMemo(()=> {
+        return (
+            <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
+                <div className="form-group col-md-12">
+                    <label htmlFor="first_name"> First Name </label>
+                    <input type="text" id="first_name" defaultValue= {customer.first_name as string} onChange={handleChange} name="firstName" className="form-control" placeholder="Enter customer's first name" />
+                </div>
+
+                <div className="form-group col-md-12">
+                    <label htmlFor="last_name"> Last Name </label>
+                    <input type="text" id="last_name" defaultValue ={customer.last_name as string} onChange={handleChange} name="lastName" className="form-control" placeholder="Enter customer's last name" />
+                </div>
+
+                <div className="form-group col-md-12">
+                    <label htmlFor="email"> Email </label>
+                    <input type="email" id="email" defaultValue={customer.email as string} onChange={handleChange} name="email" className="form-control" placeholder="Enter customer's email address" />
+                </div>
+
+                <div className="form-group col-md-12">
+                    <label htmlFor="phone"> Phone </label>
+                    <input type="text" id="phone" defaultValue={customer.phone as string} onChange={handleChange} name="phone" className="form-control" placeholder="Enter customer's phone number" />
+                </div>
+
+                <div className="form-group col-md-12">
+                    <label htmlFor="address"> Address </label>
+                    <input type="text" id="address" defaultValue={customer.address as string} onChange={handleChange} name="address" className="form-control" placeholder="Enter customer's address" />
+                </div>
+
+                <div className="form-group col-md-12">
+                    <label htmlFor="description"> Description </label>
+                    <input type="text" id="description" defaultValue={customer.description as string} onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
+                </div>
+
+                <div className="form-group col-md-4 pull-right">
+                    <button className="btn btn-success" type="submit">
+                        Edit Customer </button>
+                    {loading &&
+                    <span className="fa fa-circle-o-notch fa-spin" />
+                    }
+                </div>
+            </form>
+
+        )
+    },[customer])
     return (
         <div className="App">
             {customer &&
@@ -81,45 +125,7 @@ const EditCustomer: React.FC<RouteComponentProps<any>> =  (props)  =>{
                                 Customer's details has been edited successfully </div>
                         )}
 
-                        <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
-                            <div className="form-group col-md-12">
-                                <label htmlFor="first_name"> First Name </label>
-                                <input type="text" id="first_name" defaultValue= {customer.first_name as string} onChange={handleChange} name="firstName" className="form-control" placeholder="Enter customer's first name" />
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="last_name"> Last Name </label>
-                                <input type="text" id="last_name" defaultValue ={customer.last_name as string} onChange={handleChange} name="lastName" className="form-control" placeholder="Enter customer's last name" />
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="email"> Email </label>
-                                <input type="email" id="email" defaultValue={customer.email as string} onChange={handleChange} name="email" className="form-control" placeholder="Enter customer's email address" />
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="phone"> Phone </label>
-                                <input type="text" id="phone" defaultValue={customer.phone as string} onChange={handleChange} name="phone" className="form-control" placeholder="Enter customer's phone number" />
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="address"> Address </label>
-                                <input type="text" id="address" defaultValue={customer.address as string} onChange={handleChange} name="address" className="form-control" placeholder="Enter customer's address" />
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="description"> Description </label>
-                                <input type="text" id="description" defaultValue={customer.description as string} onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
-                            </div>
-
-                            <div className="form-group col-md-4 pull-right">
-                                <button className="btn btn-success" type="submit">
-                                    Edit Customer </button>
-                                {loading &&
-                                <span className="fa fa-circle-o-notch fa-spin" />
-                                }
-                            </div>
-                        </form>
+                        {form}
                     </div>
                 </div>
             </div>

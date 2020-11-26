@@ -1,17 +1,17 @@
-import React, {useCallback, useEffect, useMemo, useState} from 'react';
+import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {getCategories, getCustomers, getData, storeCat, storeCustomers, storeData} from "../../utils";
 import {useSalesContext} from "../../contexts/salesContext";
 import {Button} from "../../components/Button";
 import Categories from "../category/Categories";
-import { InitialState, CategoryType} from "../../types";
-import { Table, Space, Drawer, message } from 'antd';
+import { CategoryType} from "../../types";
+import { Drawer, message } from 'antd';
 import 'antd/dist/antd.css';
 import {useCustomerContext} from "../../contexts/customerContext";
 import {useCategoryContext} from "../../contexts/categoriesContext";
 import SalesData from "./SaleData";
 
 
-const Sales = () =>{
+const Sales: React.FC = () =>{
 
     const {state , dispatch } = useCustomerContext();
     const {salesState, salesDispatch} = useSalesContext();
@@ -75,7 +75,7 @@ const Sales = () =>{
 
 
 
-    const processFormSubmission = (e: React.FormEvent<HTMLFormElement>): void => {
+    const processFormSubmission = useCallback((e: React.FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
         const data = {
             product_name: stateValue.name,
@@ -85,9 +85,10 @@ const Sales = () =>{
         }
         salesDispatch({type: 'CREATE_SALE', payload: {data}})
         message.success("Sale created!")
-        window.location.href ='/sales'
+        setVisible(false);
 
-    }
+    }, [stateValue])
+
     const categories = useMemo(()=> {
         return categoryState.categories.map((category: CategoryType) => {
             return <option key={category.id} value={category.id}>
@@ -95,10 +96,69 @@ const Sales = () =>{
             </option>
 
         });
-    },[])
+    },[categoryState.categories])
+
+    const createSaleButton = useMemo(()=> {
+        return  <Button text={'Create Sale'} callback={toggleDrawer}/>
+    },[true])
+
+    const SaleDrawer = useMemo(()=> {
+        return (
+            <Drawer
+                title="Create a new customer"
+                width={720}
+                onClose={toggleDrawer}
+                visible={visible}
+                bodyStyle={{ paddingBottom: 80 }}
+
+            >
 
 
+                <div className={"col-md-12 form-wrapper"}>
 
+                    <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
+                        <div className="form-group col-md-12">
+                            <label htmlFor="first_name"> Product Name </label>
+                            <input type="text" id="product_name" onChange={handleChange} name="name" className="form-control" placeholder="Enter product name" />
+                        </div>
+
+
+                        <div className="form-group col-md-12">
+                            <label htmlFor="email"> Price </label>
+                            <input type="number" id="price" onChange={handleChange} name="price" className="form-control" placeholder="Enter Price" />
+                        </div>
+
+
+                        <div className="form-group col-md-12">
+                            <label htmlFor="description"> Description </label>
+                            <input type="text" id="description" onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
+                        </div>
+                        <div className="form-group col-md-12">
+                            <label htmlFor="customers"> Customer </label>
+                            <select name={"customerId"} className={"form-control"} placeholder={"select customer"} value={stateValue.customerId} onChange={handleChange} >
+                                <option value="" disabled={true}> select customer</option>
+                                {customerOptions}
+                            </select>
+                        </div>
+
+                        <div className="form-group col-md-12">
+                            <label htmlFor="customers"> Category </label>
+                            <select className={"form-control"} placeholder={"select customer"} value={""}  >
+                                <option value="" disabled={true}> select category</option>
+                                {categories}
+                            </select>
+                        </div>
+
+                        <div className="form-group col-md-4 pull-right">
+                            <button className="btn btn-success" type="submit">
+                                Create Product
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </Drawer>
+        )
+    }, [visible])
 
     return (
 
@@ -114,70 +174,13 @@ const Sales = () =>{
 
                 <Categories categories={categoryState.categories}/>
 
-
                 <hr/>
 
-                <Button text={'Create Sale'}
-                    callback={toggleDrawer}
-                />
+                {createSaleButton}
 
                 <SalesData sales={salesState}/>
 
-                <Drawer
-                    title="Create a new customer"
-                    width={720}
-                    onClose={toggleDrawer}
-                    visible={visible}
-                    bodyStyle={{ paddingBottom: 80 }}
-
-                >
-
-
-                    <div className={"col-md-12 form-wrapper"}>
-
-                        <form id={"create-post-form"} onSubmit={processFormSubmission} noValidate={true}>
-                            <div className="form-group col-md-12">
-                                <label htmlFor="first_name"> Product Name </label>
-                                <input type="text" id="product_name" onChange={handleChange} name="name" className="form-control" placeholder="Enter product name" />
-                            </div>
-
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="email"> Price </label>
-                                <input type="number" id="price" onChange={handleChange} name="price" className="form-control" placeholder="Enter Price" />
-                            </div>
-
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="description"> Description </label>
-                                <input type="text" id="description" onChange={handleChange} name="description" className="form-control" placeholder="Enter Description" />
-                            </div>
-                            <div className="form-group col-md-12">
-                                <label htmlFor="customers"> Customer </label>
-                                <select name={"customerId"} className={"form-control"} placeholder={"select customer"} value={stateValue.customerId} onChange={handleChange} >
-                                    <option value="" disabled={true}> select customer</option>
-                                    {customerOptions}
-                                </select>
-                            </div>
-
-                            <div className="form-group col-md-12">
-                                <label htmlFor="customers"> Category </label>
-                                <select className={"form-control"} placeholder={"select customer"} value={""}  >
-                                    <option value="" disabled={true}> select category</option>
-                                    {categories}
-                                </select>
-                            </div>
-
-                            <div className="form-group col-md-4 pull-right">
-                                <button className="btn btn-success" type="submit">
-                                    Create Product
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </Drawer>
-
-
+                {SaleDrawer}
             </div>
 
         </div>

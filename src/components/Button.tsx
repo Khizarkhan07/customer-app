@@ -8,12 +8,10 @@ type buttonProps = {
     callback?: (e: React.MouseEvent<HTMLButtonElement>) => void;
 };
 
-export const Button: React.FC<buttonProps> = ({icon, text, color, callback,}) => {
-
+export const Button: React.FC<buttonProps> = React.memo(({ icon, text, color, callback,}) => {
     const styles = {
         background: color,
     }
-
     return (
         <button
             style={styles}
@@ -24,4 +22,5 @@ export const Button: React.FC<buttonProps> = ({icon, text, color, callback,}) =>
             {text && <span>{text}</span>}
         </button>
     );
-};
+} )
+

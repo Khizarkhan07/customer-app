@@ -126,6 +126,14 @@ export const HomePage: React.FC =() =>  {
        ];
     }, [state.customer])
 
+    const MemoButton = useMemo(()=> {
+        return <Button callback={toggleDrawer} text={"create customer"}/>
+    },[visible])
+
+    const CustomerTable = useMemo(()=> {
+        return <Table columns={columns} dataSource={state.customer} />
+    },[state.customer])
+
     return (
         <div>
             {!state.customer  && (
@@ -135,11 +143,8 @@ export const HomePage: React.FC =() =>  {
             )}
 
             <div className="container">
-                
-                <Button text={"Create Customer"} callback={toggleDrawer}/>
-                
-                <Table columns={columns} dataSource={state.customer} />
-
+                {MemoButton}
+                {CustomerTable}
                 <Drawer
                     title="Create a new customer"
                     width={720}

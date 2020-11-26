@@ -39,7 +39,6 @@ const customerReducer = (state: InitialCustomerType, action: actionType) => {
         case CREATE_CUSTOMER : {
             const id = (state.customer.length+1);
             action.payload.id = id;
-            console.log(action.payload)
             const newState =  {
                 ...state,
                 customer: [...state.customer, action.payload],

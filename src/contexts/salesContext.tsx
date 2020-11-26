@@ -29,9 +29,9 @@ const salesReducer = (state: InitialState[], action: actionType) => {
     switch (action.type) {
         case CREATE_SALE :{
             action.payload.data.id = state.length+1;
-            state.push(action.payload.data);
+            const newState =  [...state, action.payload.data];
             storeData(state)
-            return state;
+            return newState;
         }
         case DELETE_SALES: {
             const result = removeSale(state, action.payload.id)
