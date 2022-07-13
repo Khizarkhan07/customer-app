@@ -1,0 +1,31 @@
+{
+  "customers": [
+    {
+      "first_name": "Tehseen Riaz",
+      "last_name": "Abbasi",
+      "email": "tehseenriazabbasi@gmail.com",
+      "phone": "03455893337",
+      "address": "COMSATS UNIVERSITY, ISLAMABAD",
+      "description": "331",
+      "id": 3
+    },
+    {
+      "first_name": "Tehseen Riaz",
+      "last_name": "Abbasi",
+      "email": "tehseenriazabbasi@gmail.com",
+      "phone": "03455893337",
+      "address": "COMSATS UNIVERSITY, ISLAMABAD",
+      "description": "345",
+      "id": 4
+    },
+    {
+      "first_name": "Tehseen Riaz",
+      "last_name": "Abbasi",
+      "email": "tehseenriazabbasi@gmail.com",
+      "phone": "03455893337",
+      "address": "COMSATS UNIVERSITY, ISLAMABAD",
+      "description": "345",
+      "id": 5
+    }
+  ]
+}
